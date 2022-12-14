@@ -20,7 +20,7 @@ const bodyParser = require("body-parser")
 const mongoose = require("mongoose");
 
 // Set up default mongoose connection
-const mongoDB = "mongodb://127.0.0.1/notes";
+const mongoDB = "mongodb://127.0.0.1/tostis";
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Get the default connection
@@ -38,10 +38,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application json
 app.use(bodyParser.json())
 
-const notesRouter = require("./routers/notesRouter");
+const tostisRouter = require("./routers/tostisRouter");
 
 // Create route /
-app.use("/notes/", notesRouter);
+app.use("/tostis/", tostisRouter);
 
 
 // Start webserver on port 8000

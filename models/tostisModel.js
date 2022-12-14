@@ -4,22 +4,22 @@ const mongoose = require("mongoose");
 // Define a schema
 const Schema = mongoose.Schema;
 
-const NoteSchema = new Schema({
+const TostiSchema = new Schema({
     title: String,
-    body: String,
-    author: String
+    ingredients: String,
+    sauce: String
 }, {
     toJSON: {virtuals: true}
 });
 
-NoteSchema.virtual("_links").get(
+TostiSchema.virtual("_links").get(
     function () {
         return {
             self: {
-                href: `${process.env.BASE_URI}notes/${this._id}`
+                href: `${process.env.BASE_URI}tostis/${this._id}`
             },
             collection: {
-                href: `${process.env.BASE_URI}notes/`
+                href: `${process.env.BASE_URI}tostis/`
             }
         }
 
@@ -27,4 +27,4 @@ NoteSchema.virtual("_links").get(
 )
 
 // Export function to create "SomeModel" model class
-module.exports = mongoose.model("Note", NoteSchema);
+module.exports = mongoose.model("Tosti", TostiSchema);

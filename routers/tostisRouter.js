@@ -1,8 +1,8 @@
-// Notes Router
+// Tosti Router
 const express = require("express");
 const router = express.Router();
 
-const Note = require("../models/notesModel");
+const Tosti = require("../models/tostisModel");
 
 // Create route / get
 router.get("/", async (req, res) => {
@@ -13,16 +13,16 @@ router.get("/", async (req, res) => {
     }
 
     try {
-        let tostis = await Note.find();
+        let tostis = await Tosti.find();
 
         let tostiCollection = {
             items: tostis,
             _links: {
                 self: {
-                    href: `${process.env.BASE_URI}notes/`
+                    href: `${process.env.BASE_URI}tostis/`
                 },
                 collection: {
-                    href: `${process.env.BASE_URI}notes/`
+                    href: `${process.env.BASE_URI}tostis/`
                 }
             },
             pagination: "MOET NOG INVULLEN"
@@ -37,7 +37,7 @@ router.get("/", async (req, res) => {
 // create route detail get
 router.get("/:_id", async (req, res) => {
     try {
-        let tosti = await Note.findById(req.params._id)
+        let tosti = await Tosti.findById(req.params._id)
         if (tosti == null) {
             res.status(404).send();
         } else {
@@ -62,7 +62,7 @@ router.post("/", async (req, res, next) => {
 //middleware against empty values post
 router.post("/", async (req, res, next) => {
     console.log("Middleware to check for empty values for post")
-    if(req.body.title && req.body.body && req.body.author){
+    if(req.body.title && req.body.ingredients && req.body.sauce){
         next();
     } else{
         res.status(400).send();
@@ -74,10 +74,10 @@ router.post("/", async (req, res) => {
     console.log("POST");
 
     // Deze info moet uit request komen
-    let tosti = Note({
+    let tosti = Tosti({
         title: req.body.title,
-        body: req.body.body,
-        author: req.body.author
+        ingredients: req.body.ingredients,
+        sauce: req.body.sauce
     })
 
     try {
@@ -102,7 +102,7 @@ router.put("/:_id", async (req, res, next) => {
 //middleware against empty values put
 router.put("/:_id", async (req, res, next) => {
     console.log("PUT Middleware to check for empty values for post")
-    if(req.body.title && req.body.body && req.body.author){
+    if(req.body.title && req.body.ingredients && req.body.sauce){
         next();
     } else{
         res.status(400).send();
@@ -111,11 +111,11 @@ router.put("/:_id", async (req, res, next) => {
 
 router.put("/:_id", async (req, res) => {
 
-    let tosti = await Note.findOneAndUpdate(req.params,
+    let tosti = await Tosti.findOneAndUpdate(req.params,
         {
             title: req.body.title,
-            body: req.body.body,
-            author: req.body.author
+            ingredients: req.body.ingredients,
+            sauce: req.body.sauce
         })
 
     try {
@@ -130,7 +130,7 @@ router.put("/:_id", async (req, res) => {
 // Create route / delete
 router.delete("/:_id", async (req, res) => {
     try {
-        await Note.findByIdAndDelete(req.params._id);
+        await Tosti.findByIdAndDelete(req.params._id);
 
         res.status(204).send();
 
